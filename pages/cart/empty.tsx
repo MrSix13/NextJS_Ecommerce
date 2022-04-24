@@ -2,8 +2,7 @@ import NextLink from 'next/link';
 import { Box } from '@mui/system';
 import {ShopLayout } from '../../components/layouts/index';
 import { RemoveShoppingCartOutlined } from '@mui/icons-material';
-import { Typography } from '@mui/material';
-import Link from 'next/link';
+import { Link, Typography } from '@mui/material';
 
  const EmptyPage = () => {
   return (

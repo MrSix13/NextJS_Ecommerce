@@ -1,6 +1,5 @@
-import { Button, CardActionArea, CardMedia, Grid, Typography } from "@mui/material";
+import { Button, CardActionArea, CardMedia, Grid, Link, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import Link from "next/link";
 import NextLink from 'next/link';
 import { initialData } from "../../database/products";
 import { ItemCounter } from "../ui";

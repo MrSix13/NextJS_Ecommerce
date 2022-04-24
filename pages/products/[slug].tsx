@@ -3,11 +3,22 @@ import { Box } from "@mui/system";
 import { ShopLayout } from "../../components/layouts"
 import { ProductSlideshow, SizeSelector } from "../../components/products";
 import { ItemCounter } from "../../components/ui";
-import { initialData } from "../../database/products"
+import {IProduct} from '../../interfaces';
+import { NextPage, GetStaticPaths, GetServerSideProps,GetStaticProps } from "next";
+import { dbProducts } from "../../database";
 
-const product = initialData.products[0];
+interface Props{
+  product:IProduct
+}
 
-const slug = () => {
+
+const ProductPage:NextPage<Props> = ({product}) => {
+
+  
+  /*const router = useRouter();
+   const {products: product, isLoading } = useProducts<IProduct>(`/products/${router.query.slug}`)*/
+
+
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
 
@@ -58,4 +69,63 @@ const slug = () => {
   )
 }
 
-export default slug
+/*export const getServerSideProps = async({params})=>{
+  const {slug = ''} = params as {slug:string}
+  const product = await dbProducts.getProductBySlug(slug);
+
+  if(!product){
+    return{
+      redirect:{
+        destination:'/',
+        permanent: false
+      }
+    }
+  }
+
+  return{
+    props:{
+      product
+    }
+  }
+
+}*/
+
+
+export const getStaticPaths: GetStaticPaths = async(ctx)=>{
+  
+  const productSlugs = await dbProducts.getAllProductSlugs();
+  
+  return{
+     paths: productSlugs.map(({slug})=>({
+       params:{
+         slug
+       }
+     })),
+     fallback:"blocking"
+  }
+}
+
+export const getStaticProps: GetStaticProps = async({params})=>{
+  
+  const {slug = ''} = params as {slug:string};
+  const product = await dbProducts.getProductBySlug(slug);
+
+  if(!product){
+    return{
+      redirect:{
+        destination:'/',
+        permanent: false
+      }
+    }
+  }
+
+  return{
+    props:{
+      product
+    },
+    revalidate: 60*60*24
+  }
+}
+
+
+export default ProductPage

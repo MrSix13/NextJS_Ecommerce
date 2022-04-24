@@ -1,10 +1,12 @@
 import {FC} from 'react';
 import Head from 'next/head';
 import { Box } from '@mui/system';
+import React from 'react';
 
 
 interface Props{
     title: string;
+    children: React.ReactNode;
 }
 
 

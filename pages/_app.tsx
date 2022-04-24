@@ -3,6 +3,9 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import type { AppProps } from 'next/app';
 import { lightTheme} from '../themes';
 import {SWRConfig} from 'swr';
+import { UiProvider } from '../context';
+
+/*Video numero 12 */
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -12,10 +15,12 @@ function MyApp({ Component, pageProps }: AppProps) {
        }}
     
     >
+      <UiProvider>
         <ThemeProvider theme={lightTheme}>
           <CssBaseline/>
           <Component {...pageProps} />
         </ThemeProvider>
+      </UiProvider>
     </SWRConfig>
   )
 }

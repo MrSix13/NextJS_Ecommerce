@@ -1,10 +1,11 @@
-import { Typography } from '@mui/material'
 import type { NextPage } from 'next'
+import { Typography } from '@mui/material'
 import { ShopLayout } from '../components/layouts'
 import { ProductList } from '../components/products'
 import { useProducts } from '../hooks'
 import { FullScreenLoading } from '../components/ui'
 
+/*video numero 8 */
 
 const HomePage: NextPage = () => {
    const {products, isLoading} =useProducts('/products')

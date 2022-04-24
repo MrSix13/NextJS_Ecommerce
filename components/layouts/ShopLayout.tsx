@@ -1,11 +1,13 @@
 import Head from 'next/head';
 import {FC} from 'react';
 import { Navbar, SideMenu } from '../ui';
+import React from 'react';
 
 interface Props{
     title: string;
     pageDescription: string;
     imageFullUrl?: string;
+    children: React.ReactNode;
 }
 
 
