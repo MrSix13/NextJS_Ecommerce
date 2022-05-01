@@ -3,7 +3,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import type { AppProps } from 'next/app';
 import { lightTheme} from '../themes';
 import {SWRConfig} from 'swr';
-import { UiProvider } from '../context';
+import { UiProvider, CartProvider } from '../context';
 
 /*Video numero 12 */
 
@@ -15,12 +15,14 @@ function MyApp({ Component, pageProps }: AppProps) {
        }}
     
     >
-      <UiProvider>
-        <ThemeProvider theme={lightTheme}>
-          <CssBaseline/>
-          <Component {...pageProps} />
-        </ThemeProvider>
-      </UiProvider>
+      <CartProvider>
+        <UiProvider>
+          <ThemeProvider theme={lightTheme}>
+            <CssBaseline/>
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </UiProvider>
+      </CartProvider>
     </SWRConfig>
   )
 }
