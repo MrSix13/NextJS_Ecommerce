@@ -1,4 +1,5 @@
-import {FC, useReducer} from 'react';
+import {FC, useReducer,useEffect} from 'react';
+import Cookie from 'js-cookie';
 import { ICartProduct } from '../../interfaces';
 import { CartContext, cartReducer } from './';
 
@@ -18,6 +19,19 @@ interface six{
 export const CartProvider:FC<six> = ( {children}) =>{
     
     const [state,dispatch] = useReducer(cartReducer, CART_INITIAL_STATE);
+
+    useEffect(()=>{
+        try {
+            const cookieProducts = Cookie.get('cart') ? JSON.parse(Cookie.get('cart')!) : []
+            dispatch({type:'[Cart] - LoadCart from cookies | storage ', payload: cookieProducts});
+        } catch (error) {
+            dispatch({type:'[Cart] - LoadCart from cookies | storage ', payload: []});
+        }
+    },[])
+    
+    useEffect(()=>{
+        Cookie.set('cart', JSON.stringify(state.cart))
+    },[state.cart])
     
     const addProductToCart = (product:ICartProduct ) =>{
         //Nivel1
@@ -41,13 +55,23 @@ export const CartProvider:FC<six> = ( {children}) =>{
 
         dispatch({type:'[Cart] - Update products in cart', payload: updateProducts});
     }
+
+
+    const updateCartQuantity = (product:ICartProduct) =>{
+        dispatch({type:'[Cart] - Change cart quantity', payload: product})
+    }
     
+    const removeCartProduct = (product:ICartProduct) =>{
+        dispatch({type:'[Cart] - Remove product in cart', payload: product})
+    }
     return (
         <CartContext.Provider value={{
             ...state,
 
             //Methods
-            addProductToCart
+            addProductToCart,
+            updateCartQuantity,
+            removeCartProduct
         }}>
             {children}
         </CartContext.Provider>
