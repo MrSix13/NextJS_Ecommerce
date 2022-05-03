@@ -1,10 +1,26 @@
+import {useState} from 'react';
+import NextLink from 'next/link';
 import { Button, Grid, Link, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { AuthLayout } from "../../components/layouts";
-import NextLink from 'next/link';
+import {useForm} from 'react-hook-form';
+
+type FormData = {
+    name: string;
+    email: string;
+    password: string;
+};
 
 
 const RegisterPage = () => {
+
+    const {register, handleSubmit, formState:{errors}} = useForm<FormData>();
+
+    const [showError, setShowError] = useState(false);
+    
+    const onRegisterForm = (data:FormData) =>{
+
+    }
   return (
     <AuthLayout title={'Ingresar'}>
         <Box sx={{width:350, padding:'10px 20px'}}>
