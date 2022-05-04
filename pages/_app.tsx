@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import { lightTheme} from '../themes';
 import {SWRConfig} from 'swr';
 import { UiProvider, CartProvider } from '../context';
+import { AuthProvider } from '../context/auth';
 
 /*Video numero 12 */
 
@@ -15,14 +16,16 @@ function MyApp({ Component, pageProps }: AppProps) {
        }}
     
     >
-      <CartProvider>
-        <UiProvider>
-          <ThemeProvider theme={lightTheme}>
-            <CssBaseline/>
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </UiProvider>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <UiProvider>
+            <ThemeProvider theme={lightTheme}>
+              <CssBaseline/>
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </UiProvider>
+        </CartProvider>
+      </AuthProvider>
     </SWRConfig>
   )
 }

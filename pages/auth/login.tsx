@@ -1,27 +1,48 @@
-import {useState} from 'react';
+import {useState,useContext} from 'react';
 import NextLink from 'next/link';
 import { Button, Chip, Grid, Link, TextField, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import { AuthLayout } from "../../components/layouts";
+import {AuthContext} from '../../context';
 import {useForm} from 'react-hook-form';
 import { validations } from '../../utils';
 import { tesloApi } from '../../api';
 import { ErrorOutline } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+
 
 type FormData = {
     email: string,
     password: string
 }
 
+//Video numero 19
+
+
 
 const LoginPage = () => {
 
+    const router = useRouter();
+
+    const {loginUser} = useContext(AuthContext);
     const {register,handleSubmit, formState: {errors}} = useForm<FormData>()
     const [showError, setShowError] = useState(false);
 
     const onLoginUser = async({email, password}:FormData) =>{
+
+        
         setShowError(false);
-        try {
+        
+        const isValidLogin = await loginUser(email,password);
+        if(!isValidLogin){
+            setShowError(true);
+            setTimeout(()=>setShowError(false),3000);
+            return;
+        }
+
+        router.replace('/')
+        
+        /*try {
             const {data} = await tesloApi.post('/user/login', {email,password});
             const {token, user} = data;
             console.log({token, user})
@@ -29,7 +50,7 @@ const LoginPage = () => {
             console.log("Error en las credenciales");
             setShowError(true);
             setTimeout(()=>setShowError(false), 3000)
-        }
+        }*/
     }
 
   return (
