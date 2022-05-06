@@ -1,9 +1,13 @@
 import { Button,Box ,FormControl, Grid, MenuItem, Select, TextField, Typography } from "@mui/material"
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { ShopLayout } from "../../components/layouts"
+import { CartContext } from "../../context";
 import { countries } from "../../utils";
 
-
+//video numero 10
 type FormData = {
     firstName: string;
     lastName: string;
@@ -13,25 +17,41 @@ type FormData = {
     country: string;
     phone: string;
 }
+const getAddressFormCookies = ():FormData =>{
+    return{
+        firstName: '',
+        lastName: '',
+        address: '',
+        zip: '',
+        city: '',
+        country: '',
+        phone: ''
+    }
+}
+
 
 const AddressPage = () => {
 
+    const { updateAddress } = useContext(CartContext);
+    const router = useRouter();
     const {register,handleSubmit, formState:{errors}} = useForm<FormData>({
-        defaultValues:{
-            firstName: '',
-            lastName: '',
-            address: '',
-            zip: '',
-            city: '',
-            country: countries[0].code,
-            phone: '',
-        }
+        defaultValues:getAddressFormCookies()
     });
 
     const onSubmitAddress = (data:FormData) =>{
-        console.log(data)
+        Cookies.set('firstname', data.firstName)
+        Cookies.set('lastName', data.lastName)
+        Cookies.set('address', data.address)
+        Cookies.set('zip', data.zip)
+        Cookies.set('city', data.city)
+        Cookies.set('phone', data.phone)
+
+        updateAddress(data)
+        router.push('/checkout/summary')
+        
     }
 
+    
   return (
     <ShopLayout title="Direccion" pageDescription="Confirmar direccion del destino">
         <form onSubmit={handleSubmit(onSubmitAddress)}>
@@ -130,7 +150,7 @@ const AddressPage = () => {
             </Grid>
 
             <Box sx={{mt:5}} display='flex' justifyContent='center'>
-                <Button  color="secondary" className="circular-btn" size="large">
+                <Button type='submit'  color="secondary" className="circular-btn" size="large">
                     Revisar Pedido
                 </Button>
             </Box>
